@@ -145,17 +145,27 @@ size_t tcmu_iovec_seek(struct iovec *iovec, size_t count)
 
 	while (count) {
 		if (count >= iovec->iov_len) {
+			// update remmaining count.
 			count -= iovec->iov_len;
+			// Zero the iov_len.
 			iovec->iov_len = 0;
+			// Move the pointer to next iovec.
 			iovec++;
+			// Cosumed one iovec.
 			consumed++;
 		} else {
+			// count < iov_len
+			// Partial data of iovec(size = count) will be used.
+			// Update the iovec and point to remaining data in this buffer.
 			iovec->iov_base += count;
+			// Update the length of iovec.
 			iovec->iov_len -= count;
+			// Read/Wirte end.
 			count = 0;
 		}
 	}
 
+    // Return the amount of consumed iovec which is completed.
 	return consumed;
 }
 
