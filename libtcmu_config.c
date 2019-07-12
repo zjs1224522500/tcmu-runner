@@ -198,8 +198,10 @@ static void tcmu_conf_set_options(struct tcmu_config *cfg)
 static int tcmu_read_config(int fd, char *buf, int count)
 {
 	ssize_t len;
+	// Temp variable is used to store the original errno.
 	int save = errno;
 
+	// If errno == EAGAIN(Try again), read the file. Wait the block IO finished.
 	do {
 		len = read(fd, buf, count);
 	} while (errno == EAGAIN);
@@ -394,6 +396,7 @@ free_buf:
 }
 
 #define BUF_LEN 1024
+// Dynamic load the configuration file
 static void *dyn_config_start(void *arg)
 {
 	struct tcmu_config *cfg = arg;
@@ -457,6 +460,7 @@ int tcmu_watch_config(struct tcmu_config *cfg)
 {
 	int ret;
 
+	// Creare the thread to watch the configuration file and load it.
 	ret = pthread_create(&cfg->thread_id, NULL, dyn_config_start, cfg);
 	if (ret)
 		return -ret;

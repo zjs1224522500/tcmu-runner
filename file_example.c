@@ -184,9 +184,11 @@ done:
 
 static int file_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
 {
+	// Get the file state of tcmu_device.
 	struct file_state *state = tcmur_dev_get_private(dev);
 	int ret;
 
+	// Sync(Flush) the data in page cache to disk.
 	if (fsync(state->fd)) {
 		tcmu_err("sync failed\n");
 		ret = TCMU_STS_WR_ERR;
@@ -200,6 +202,7 @@ done:
 static int file_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
 {
 	switch (cfg->type) {
+	// Extend or Reduce the size of file.
 	case TCMULIB_CFG_DEV_SIZE:
 		/*
 		 * TODO - For open/reconfig we should make sure the FS the
@@ -208,6 +211,7 @@ static int file_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
 		 */
 		return 0;
 	case TCMULIB_CFG_DEV_CFGSTR:
+	// Handle the write cache.
 	case TCMULIB_CFG_WRITE_CACHE:
 	default:
 		return -EOPNOTSUPP;
