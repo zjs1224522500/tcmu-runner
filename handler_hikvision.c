@@ -125,9 +125,9 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		      struct iovec *iov, size_t iov_cnt, size_t length,
 		      off_t offset)
 {
-	struct hikvision_state = tcmur_dev_get_private(dev);
+	struct hikvision_state *state= tcmur_dev_get_private(dev);
 	ssize_t ret;
-	char *iqn = hikivision_state->iqn;
+	char *iqn = state->iqn;
 	tcmu_err("write with iqn: %s\n", iqn);
 	ret = TCMU_STS_OK;
 	return ret;
