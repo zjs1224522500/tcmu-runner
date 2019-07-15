@@ -46,8 +46,10 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	struct hikvision_state *state;
 	char *config;
 	state = calloc(1, sizeof(*state));
-	if (!state)
+	if (!state) 
+	{
 		return -ENOMEM;
+	}
 	tcmur_dev_set_private(dev, state);
 
 	// Parse the config string to iqn.
@@ -57,7 +59,7 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 		tcmu_err("no configuration found in cfgstring\n");
 		goto err;
 	}
-    int length = split_symbol - defalut_config_string;
+    int length = split_symbol - cfgString;
     char *config = (char *) calloc(length, sizeof(char));
     strncpy(config, cfgString, length);
 	state->iqn = config;
@@ -67,6 +69,9 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 
 	// TODO: Test the hikivision object storage
 	
+	
+	tcmu_dbg("config %s\n", tcmu_dev_get_cfgstring(dev));
+
 	return 0;
 
 err:
@@ -99,7 +104,7 @@ static int hikvision_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		     off_t offset)
 {
 	
-	return 0;
+	return TCMU_STS_OK;
 }
 
 /**
@@ -129,7 +134,7 @@ done:
 
 static int hikvision_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
 {
-	
+	return TCMU_STS_OK;
 }
 
 static int hikvision_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
