@@ -44,15 +44,28 @@ struct hikivision_state {
 static int hikvision_open(struct tcmu_device *dev, bool reopen)
 {
 	struct hikvision_state *state;
+	char *config;
 	state = calloc(1, sizeof(*state));
 	if (!state)
 		return -ENOMEM;
 	tcmur_dev_set_private(dev, state);
+
+	// Parse the config string to iqn.
+	char *cfgString = tcmu_dev_get_cfgstring(dev);
+	char *split_symbol = strchr(cfgString, '/');
+	if (!config) {
+		tcmu_err("no configuration found in cfgstring\n");
+		goto err;
+	}
+    int length = split_symbol - defalut_config_string;
+    char *config = (char *) calloc(length, sizeof(char));
+    strncpy(config, cfgString, length);
+	state->iqn = config;
+
+	// Enable the write cache.
  	tcmu_dev_set_write_cache_enabled(dev, 1);
 
 	// TODO: Test the hikivision object storage
-
-	// TODO: Set the iqn to struct hikvision state
 	
 	return 0;
 
@@ -63,15 +76,10 @@ err:
 
 static void hikvision_close(struct tcmu_device *dev)
 {
-	// // Get the file state of tcmu_device.
-	// struct file_state *state = tcmur_dev_get_private(dev);
-	
-    // // Close the file
-	// close(state->fd);
-
-	// // free the state
-	// free(state);
+	// Get the file state of tcmu_device.
 	struct hikvision_state *state = tcmur_dev_get_private(dev);
+	
+	// free(state);
 	free(state);
 }
 
@@ -109,7 +117,14 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		      struct iovec *iov, size_t iov_cnt, size_t length,
 		      off_t offset)
 {
-	
+	struct hikvision_state = tcmur_dev_get_private(dev);
+	char *iqn = hikivision_state->iqn;
+	size_t remaining = length;
+	ssize_t ret;
+	tcmu_err("write with iqn: %s\n", iqn);
+	ret = TCMU_STS_OK;
+done:
+	return ret;
 }
 
 static int hikvision_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
@@ -137,7 +152,7 @@ static int hikvision_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *
 }
 
 static const char hikvision_cfg_desc[] =
-	"The path to the file to use as a backstore.";
+	"The format of config string should be 'iqn/lun-name'.";
 
 // Init the tcmu_handler with given static method defined in this class.
 static struct tcmur_handler hikvision_handler = {

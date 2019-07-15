@@ -169,6 +169,8 @@ target_include_directories(handler_file
   PUBLIC ${PROJECT_SOURCE_DIR}/ccan
   )
 
+install(TARGETS handler_file DESTINATION ${CMAKE_INSTALL_LIBDIR}/tcmu-runner)
+
 if (with-fbo)
 	# Stuff for building the file optical handler
 	add_library(handler_file_optical

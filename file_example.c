@@ -56,9 +56,9 @@ static int file_open(struct tcmu_device *dev, bool reopen)
     // Move the pointer to the first '/' location in path string
 	config = strchr(tcmu_dev_get_cfgstring(dev), '/');
 	if (!config) {
-		tcmu_err("no configuration found in cfgstring\n");
+	tcmu_err("no configuration found in cfgstring\n");
 		goto err;
-	}
+	}	
 	config += 1; /* get past '/' */
 
     // Enable the tcmu write cache.(Set the value of tcmu_device as true)

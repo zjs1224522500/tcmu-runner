@@ -4,6 +4,9 @@
         "libtcmu.h": "c",
         "type_traits": "cpp",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "string.h": "c",
+        "windows.h": "c",
+        "tcmu-runner.h": "c"
     }
 }
