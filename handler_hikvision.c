@@ -60,7 +60,7 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	cfgString = tcmu_dev_get_cfgstring(dev);
 	state->fd = open(cfgString, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 	if (state->fd == -1) {
-		tcmu_err("could not open %s: %m\n", config);
+		tcmu_err("could not open %s: %m\n", cfgString);
 		goto err;
 	}
 	split_symbol = strchr(cfgString + 1, '/');
