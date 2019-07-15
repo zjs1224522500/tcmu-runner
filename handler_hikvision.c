@@ -44,7 +44,10 @@ struct hikvision_state {
 static int hikvision_open(struct tcmu_device *dev, bool reopen)
 {
 	struct hikvision_state *state;
+	char *cfgString, *split_symbol;
+	int length;
 	char *config;
+	
 	state = calloc(1, sizeof(*state));
 	if (!state) 
 	{
@@ -53,16 +56,14 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	tcmur_dev_set_private(dev, state);
 
 	// Parse the config string to iqn.
-	char *cfgString;
 	cfgString = tcmu_dev_get_cfgstring(dev);
-	char *split_symbol = strchr(cfgString, '/');
+	split_symbol = strchr(cfgString, '/');
 	if (!split_symbol) {
 		tcmu_err("no configuration found in cfgstring\n");
 		goto err;
 	}
-    int length;
 	length = split_symbol - cfgString;
-    char *config = (char *) calloc(length, sizeof(char));
+    config = (char *) calloc(length, sizeof(char));
     strncpy(config, cfgString, length);
 	state->iqn = config;
 
@@ -125,8 +126,8 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		      off_t offset)
 {
 	struct hikvision_state = tcmur_dev_get_private(dev);
-	char *iqn = hikivision_state->iqn;
 	ssize_t ret;
+	char *iqn = hikivision_state->iqn;
 	tcmu_err("write with iqn: %s\n", iqn);
 	ret = TCMU_STS_OK;
 	return ret;
