@@ -39,7 +39,7 @@
 
 struct hikivision_state {
 	char *iqn;
-}
+};
 
 static int hikvision_open(struct tcmu_device *dev, bool reopen)
 {
