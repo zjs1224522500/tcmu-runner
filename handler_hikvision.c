@@ -58,7 +58,7 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 
 	// Parse the config string to iqn and file desc.
 	cfgString = tcmu_dev_get_cfgstring(dev);
-	state->fd = open(config, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	state->fd = open(cfgString, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 	if (state->fd == -1) {
 		tcmu_err("could not open %s: %m\n", config);
 		goto err;
