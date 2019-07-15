@@ -39,6 +39,7 @@
 
 struct hikvision_state {
 	char *iqn;
+	int fd;
 };
 
 static int hikvision_open(struct tcmu_device *dev, bool reopen)
@@ -55,24 +56,28 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	}
 	tcmur_dev_set_private(dev, state);
 
-	// Parse the config string to iqn.
+	// Parse the config string to iqn and file desc.
 	cfgString = tcmu_dev_get_cfgstring(dev);
-	split_symbol = strchr(cfgString, '/');
+	state->fd = open(config, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	if (state->fd == -1) {
+		tcmu_err("could not open %s: %m\n", config);
+		goto err;
+	}
+	split_symbol = strchr(cfgString + 1, '/');
 	if (!split_symbol) {
 		tcmu_err("no configuration found in cfgstring\n");
 		goto err;
 	}
-	length = split_symbol - cfgString;
+	length = split_symbol - cfgString - 1;
     config = (char *) calloc(length, sizeof(char));
-    strncpy(config, cfgString, length);
+    strncpy(config, cfgString + 1, length);
 	state->iqn = config;
 
 	// Enable the write cache.
  	tcmu_dev_set_write_cache_enabled(dev, 1);
 
 	// TODO: Test the hikivision object storage
-	
-	
+
 	tcmu_dbg("config %s\n", tcmu_dev_get_cfgstring(dev));
 
 	return 0;
