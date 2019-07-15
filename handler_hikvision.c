@@ -37,7 +37,7 @@
 #include "tcmu-runner.h"
 #include "tcmur_device.h"
 
-struct hikivision_state {
+struct hikvision_state {
 	char *iqn;
 };
 
@@ -53,13 +53,15 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	tcmur_dev_set_private(dev, state);
 
 	// Parse the config string to iqn.
-	char *cfgString = tcmu_dev_get_cfgstring(dev);
+	char *cfgString;
+	cfgString = tcmu_dev_get_cfgstring(dev);
 	char *split_symbol = strchr(cfgString, '/');
-	if (!config) {
+	if (!split_symbol) {
 		tcmu_err("no configuration found in cfgstring\n");
 		goto err;
 	}
-    int length = split_symbol - cfgString;
+    int length;
+	length = split_symbol - cfgString;
     char *config = (char *) calloc(length, sizeof(char));
     strncpy(config, cfgString, length);
 	state->iqn = config;
@@ -124,11 +126,9 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 {
 	struct hikvision_state = tcmur_dev_get_private(dev);
 	char *iqn = hikivision_state->iqn;
-	size_t remaining = length;
 	ssize_t ret;
 	tcmu_err("write with iqn: %s\n", iqn);
 	ret = TCMU_STS_OK;
-done:
 	return ret;
 }
 
