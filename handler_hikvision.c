@@ -48,9 +48,10 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	char *cfgString, *split_symbol;
 	int length;
 	char *config;
-	
+	struct hikvision_state *hm_private;
+
 	tcmu_err("open tcmu-device with fd %d\n", tcmu_dev_get_fd(dev));
-	tcmu_err("open tcmu-device with fd %d\n", tcmu_dev_get_cfgstring(dev));
+	tcmu_err("open tcmu-device with fd %s\n", tcmu_dev_get_cfgstring(dev));
 
 
 	state = calloc(1, sizeof(*state));
@@ -86,8 +87,7 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	tcmu_err("iqn of state: %s\n", state->iqn);
 	tcmu_err("fd of state: %d\n", state->fd);
 
-	struct hikvision_state hm_private = tcmur_dev_get_private(dev);
-	
+	hm_private = tcmur_dev_get_private(dev);
 	tcmu_err("iqn of hm_private: %s\n", hm_private->iqn);
 	tcmu_err("fd of state: %d\n", hm_private->fd);
 
