@@ -129,14 +129,15 @@ static int hikvision_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 {
 	struct hikvision_state *tcmur_state = tcmur_dev_get_private(dev);
 	struct hikvision_state *tcmu_state = tcmu_dev_get_private(dev);
+	size_t remaining = length;
+	ssize_t ret;
 	
 	char *iqn = tcmur_state->iqn;
 	tcmu_err("write with iqn(tcmur): %s\n", iqn);
 	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
 	tcmu_err("write with iqn(tcmu): %s\n", tcmu_state->iqn);
 	tcmu_err("write with fd(tcmu): %d\n", tcmu_state->fd);
-	size_t remaining = length;
-	ssize_t ret;
+
 
     // Read the file in loop
 	while (remaining) {
@@ -185,14 +186,15 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	struct hikvision_state *tcmur_state = tcmur_dev_get_private(dev);
 	struct hikvision_state *tcmu_state = tcmu_dev_get_private(dev);
 	
+    size_t remaining = length;
+	ssize_t ret;
+	
 	char *iqn = tcmur_state->iqn;
 	tcmu_err("write with iqn(tcmur): %s\n", iqn);
 	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
 	tcmu_err("write with iqn(tcmu): %s\n", tcmu_state->iqn);
 	tcmu_err("write with fd(tcmu): %d\n", tcmu_state->fd);
 
-    size_t remaining = length;
-	ssize_t ret;
 
     // Write the file in loop
 	while (remaining) {
