@@ -78,7 +78,7 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	length = second_split_symbol - file_desc_path - 1;
     iqn = (char *) calloc(length, sizeof(char));
     strncpy(iqn, file_desc_path + 1, length);
-	state->iqn = iqn;
+	state->iqn = strcat(iqn, "\0");
 
 	// Enable the write cache.
  	tcmu_dev_set_write_cache_enabled(dev, 1);
@@ -188,7 +188,7 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	
     size_t remaining = length;
 	ssize_t ret;
-	
+
 	char *iqn = tcmur_state->iqn;
 	tcmu_err("write with iqn(tcmur): %s\n", iqn);
 	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
