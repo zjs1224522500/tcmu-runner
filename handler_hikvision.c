@@ -45,9 +45,8 @@ struct hikvision_state {
 static int hikvision_open(struct tcmu_device *dev, bool reopen)
 {
 	struct hikvision_state *state;
-	char *cfgString, *split_symbol;
+	char *cfgString, *first_split_symbol, *second_split_symbol, *file_desc_path, *iqn;
 	int length;
-	char *config;
 	struct hikvision_state *hm_private;
 
 	tcmu_err("open tcmu-device with fd %d\n", tcmu_dev_get_fd(dev));
@@ -63,20 +62,23 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 
 	// Parse the config string to iqn and file desc.
 	cfgString = tcmu_dev_get_cfgstring(dev);
-	state->fd = open(cfgString, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	first_split_symbol = strchr(cfgString, '/');
+	file_desc_path = first_split_symbol + 1;
+
+	state->fd = open(file_desc_path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 	if (state->fd == -1) {
-		tcmu_err("could not open %s: %m\n", cfgString);
+		tcmu_err("could not open %s: %m\n", file_desc_path);
 		goto err;
 	}
-	split_symbol = strchr(cfgString + 1, '/');
-	if (!split_symbol) {
+	second_split_symbol = strchr(file_desc_path + 1, '/');
+	if (!second_split_symbol) {
 		tcmu_err("no configuration found in cfgstring\n");
 		goto err;
 	}
-	length = split_symbol - cfgString - 1;
-    config = (char *) calloc(length, sizeof(char));
-    strncpy(config, cfgString + 1, length);
-	state->iqn = config;
+	length = second_split_symbol - file_desc_path - 1;
+    iqn = (char *) calloc(length, sizeof(char));
+    strncpy(iqn, file_desc_path + 1, length);
+	state->iqn = iqn;
 
 	// Enable the write cache.
  	tcmu_dev_set_write_cache_enabled(dev, 1);
@@ -128,14 +130,41 @@ static int hikvision_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	struct hikvision_state *tcmur_state = tcmur_dev_get_private(dev);
 	struct hikvision_state *tcmu_state = tcmu_dev_get_private(dev);
 	
-	ssize_t ret;
 	char *iqn = tcmur_state->iqn;
 	tcmu_err("write with iqn(tcmur): %s\n", iqn);
 	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
 	tcmu_err("write with iqn(tcmu): %s\n", tcmu_state->iqn);
 	tcmu_err("write with fd(tcmu): %d\n", tcmu_state->fd);
+	size_t remaining = length;
+	ssize_t ret;
+
+    // Read the file in loop
+	while (remaining) {
+		// Read the data and store in the iov array. Return the data size.
+		ret = preadv(tcmur_state->fd, iov, iov_cnt, offset);
+		if (ret < 0) {
+			tcmu_err("read failed: %m\n");
+			ret = TCMU_STS_RD_ERR;
+			goto done;
+		}
+
+		if (ret == 0) {
+			/* EOF, then zeros the iovecs left */
+			tcmu_iovec_zero(iov, iov_cnt);
+			break;
+		}
+
+        // Consume the iov array. 
+		tcmu_iovec_seek(iov, ret);
+		// Move the offset
+		offset += ret;
+		// Change the length and continute to read file.
+		remaining -= ret;
+	}
+	// Read finished, and status is OK.
 	ret = TCMU_STS_OK;
-	return ret;	
+done:
+	return ret;
 }
 
 /**
@@ -156,19 +185,51 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 	struct hikvision_state *tcmur_state = tcmur_dev_get_private(dev);
 	struct hikvision_state *tcmu_state = tcmu_dev_get_private(dev);
 	
-	ssize_t ret;
 	char *iqn = tcmur_state->iqn;
 	tcmu_err("write with iqn(tcmur): %s\n", iqn);
 	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
 	tcmu_err("write with iqn(tcmu): %s\n", tcmu_state->iqn);
 	tcmu_err("write with fd(tcmu): %d\n", tcmu_state->fd);
+
+    size_t remaining = length;
+	ssize_t ret;
+
+    // Write the file in loop
+	while (remaining) {
+	    // Wirte the data in the iov array to file. Return the data size.
+		ret = pwritev(tcmur_state->fd, iov, iov_cnt, offset);
+		if (ret < 0) {
+			tcmu_err("write failed: %m\n");
+			ret = TCMU_STS_WR_ERR;
+			goto done;
+		}
+		// Consume an inv array.
+		tcmu_iovec_seek(iov, ret);
+		// Move the offset.
+		offset += ret;
+		// Change the length and continue to write.
+		remaining -= ret;
+	}
 	ret = TCMU_STS_OK;
-	return ret;	
+done:
+	return ret;
 }
 
 static int hikvision_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
 {
-	return TCMU_STS_OK;
+	// Get the file state of tcmu_device.
+	struct hikvision_state *state = tcmur_dev_get_private(dev);
+	int ret;
+
+	// Sync(Flush) the data in page cache to disk.
+	if (fsync(state->fd)) {
+		tcmu_err("sync failed\n");
+		ret = TCMU_STS_WR_ERR;
+		goto done;
+	}
+	ret = TCMU_STS_OK;
+done:
+	return ret;
 }
 
 static int hikvision_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)

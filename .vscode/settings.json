@@ -8,6 +8,7 @@
         "string.h": "c",
         "windows.h": "c",
         "tcmu-runner.h": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "tcmur_device.h": "c"
     }
 }
