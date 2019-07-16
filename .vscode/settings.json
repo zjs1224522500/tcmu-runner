@@ -7,6 +7,7 @@
         "stdlib.h": "c",
         "string.h": "c",
         "windows.h": "c",
-        "tcmu-runner.h": "c"
+        "tcmu-runner.h": "c",
+        "typeinfo": "c"
     }
 }

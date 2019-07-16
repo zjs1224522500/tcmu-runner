@@ -49,6 +49,10 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	int length;
 	char *config;
 	
+	tcmu_err("open tcmu-device with fd %d\n", tcmu_dev_get_fd(dev));
+	tcmu_err("open tcmu-device with fd %d\n", tcmu_dev_get_cfgstring(dev));
+
+
 	state = calloc(1, sizeof(*state));
 	if (!state) 
 	{
@@ -78,7 +82,14 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 
 	// TODO: Test the hikivision object storage
 
-	tcmu_dbg("config %s\n", tcmu_dev_get_cfgstring(dev));
+	tcmu_err("config string %s\n", tcmu_dev_get_cfgstring(dev));
+	tcmu_err("iqn of state: %s\n", state->iqn);
+	tcmu_err("fd of state: %d\n", state->fd);
+
+	struct hikvision_state hm_private = tcmur_dev_get_private(dev);
+	
+	tcmu_err("iqn of hm_private: %s\n", hm_private->iqn);
+	tcmu_err("fd of state: %d\n", hm_private->fd);
 
 	return 0;
 
@@ -92,6 +103,9 @@ static void hikvision_close(struct tcmu_device *dev)
 	// Get the file state of tcmu_device.
 	struct hikvision_state *state = tcmur_dev_get_private(dev);
 	
+	// Close the file
+	close(state->fd);
+
 	// free(state);
 	free(state);
 }
@@ -111,8 +125,17 @@ static int hikvision_read(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		     struct iovec *iov, size_t iov_cnt, size_t length,
 		     off_t offset)
 {
+	struct hikvision_state *tcmur_state = tcmur_dev_get_private(dev);
+	struct hikvision_state *tcmu_state = tcmu_dev_get_private(dev);
 	
-	return TCMU_STS_OK;
+	ssize_t ret;
+	char *iqn = tcmur_state->iqn;
+	tcmu_err("write with iqn(tcmur): %s\n", iqn);
+	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
+	tcmu_err("write with iqn(tcmu): %s\n", tcmu_state->iqn);
+	tcmu_err("write with fd(tcmu): %d\n", tcmu_state->fd);
+	ret = TCMU_STS_OK;
+	return ret;	
 }
 
 /**
@@ -130,12 +153,17 @@ static int hikvision_write(struct tcmu_device *dev, struct tcmulib_cmd *cmd,
 		      struct iovec *iov, size_t iov_cnt, size_t length,
 		      off_t offset)
 {
-	struct hikvision_state *state= tcmur_dev_get_private(dev);
+	struct hikvision_state *tcmur_state = tcmur_dev_get_private(dev);
+	struct hikvision_state *tcmu_state = tcmu_dev_get_private(dev);
+	
 	ssize_t ret;
-	char *iqn = state->iqn;
-	tcmu_err("write with iqn: %s\n", iqn);
+	char *iqn = tcmur_state->iqn;
+	tcmu_err("write with iqn(tcmur): %s\n", iqn);
+	tcmu_err("write with fd(tcmur): %d\n", tcmur_state->fd);
+	tcmu_err("write with iqn(tcmu): %s\n", tcmu_state->iqn);
+	tcmu_err("write with fd(tcmu): %d\n", tcmu_state->fd);
 	ret = TCMU_STS_OK;
-	return ret;
+	return ret;	
 }
 
 static int hikvision_flush(struct tcmu_device *dev, struct tcmulib_cmd *cmd)
