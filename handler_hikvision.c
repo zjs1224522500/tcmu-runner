@@ -40,6 +40,7 @@
 struct hikvision_state {
 	char *iqn;
 	int fd;
+	char *fragment_size;
 };
 
 static int hikvision_open(struct tcmu_device *dev, bool reopen)
