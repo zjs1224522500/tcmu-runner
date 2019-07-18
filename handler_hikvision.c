@@ -48,7 +48,7 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 {
 	struct hikvision_state *state;
 	char *cfgString, *first_virgule_symbol, *second_virgule_symbol, *semicolon_symbol, *file_desc_path, *iqn, *fragment_size_str;
-	int length, file_path_length, fragment_size_length;
+	int length, file_path_length;
 	struct hikvision_state *hm_private;
 
 	state = calloc(1, sizeof(*state));
@@ -63,7 +63,6 @@ static int hikvision_open(struct tcmu_device *dev, bool reopen)
 	first_virgule_symbol = strchr(cfgString, '/');
 	semicolon_symbol = strchr(cfgString, ';');
 	fragment_size_str = semicolon_symbol + 1;
-	fragment_size_length = strlen(fragment_size_str);
 	file_path_length = semicolon_symbol - first_virgule_symbol - 1;
 	file_desc_path = (char *) calloc(file_path_length, sizeof(char));
 	strncpy(file_desc_path, first_virgule_symbol + 1, file_path_length);
