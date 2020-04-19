@@ -187,7 +187,7 @@ target_include_directories(handler_file
 # Stuff for building the handler_hikvision_obj handler
 add_library(handler_hikvision_obj
   SHARED
-  handler_hikvision_file.c
+  handler_hikvision_obj.c
   )
 set_target_properties(handler_hikvision_obj
   PROPERTIES
