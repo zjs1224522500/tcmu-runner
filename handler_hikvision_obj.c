@@ -43,7 +43,7 @@
 #define MB_UNIT "MB"
 #define KB_UNIT "KB"
 
-#define TCMU_KV_DEMO_DIR "/root/tcmu_kv_demo/"
+#define TCMU_KV_DEMO_DIR "/root/tcmu_kv_demo_obj/"
 
 #define max_num(a, b) ({ a < b ? b : a; })
 #define min_num(a, b) ({ a < b ? a : b; })
@@ -78,6 +78,7 @@ static int hikvision_obj_open(struct tcmu_device *dev, bool reopen)
 	struct hikvision_obj_state *state;
 	char *cfgString;
 	struct hikvision_obj_state *hm_private;
+	int createBucketResult;
 
 	state = calloc(1, sizeof(*state));
 	if (!state)
@@ -97,6 +98,10 @@ static int hikvision_obj_open(struct tcmu_device *dev, bool reopen)
 	tcmu_err("iqn of state: %s\n", state->iqn);
 	tcmu_err("frag size : %lf\n", state->fragment_size);
 	tcmu_err("frag size unit : %s\n", state->fragment_size_unit);
+
+	// Create Bucket firstly.
+	createBucketResult = createBucket(state->iqn);
+	tcmu_err("Bucket create result : %d", createBucketResult);
 
 	hm_private = tcmur_dev_get_private(dev);
 	tcmu_err("iqn of hm_private: %s\n", hm_private->iqn);
@@ -380,10 +385,8 @@ int OBJ_read(char *key, char *value, size_t fragment_size)
 	delim = "_";
 	BucketName = strtok(keyCopy, delim);
 	downloadResult = downloadfile(BucketName, key, path);
+	tcmu_err("Download %s Result: %d\n", path, downloadResult);
 	free(keyCopy);
-	tcmu_err("Download Result: %d\n", downloadResult);
-
-
 
 	fd = open(path, O_CREAT | O_RDONLY, S_IRUSR | S_IWUSR);
 	if (fd == -1)
@@ -432,8 +435,8 @@ int OBJ_write(char *key, char *value, size_t fragment_size)
 	delim = "_";
 	BucketName = strtok(keyCopy, delim);
 	uploadResult = uploadfile(BucketName, key, path);
+	tcmu_err("Upload %s Result: %d\n", path, uploadResult);
 	free(keyCopy);
-	tcmu_err("Upload Result: %d\n", uploadResult);
 
 	return ret;
 }
