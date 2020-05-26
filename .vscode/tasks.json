@@ -1,0 +1,63 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558 
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "shell",
+            "label": "gcc build active file",
+            "command": "/usr/bin/gcc",
+            "args": [
+                "-g",
+                "${file}",
+                "-L",
+                "/c++/hik_obj/lib/CentOS64",
+                "-l",
+                "boost_chrono",
+                "-l",
+                "boost_filesystem",
+                "-l",
+                "boost_serialization",
+                "-l",
+                "boost_system",
+                "-l",
+                "boost_thread",
+                "-l",
+                "crypto",
+                "-l",
+                "DycHikSingleThreadDecode",
+                "-l",
+                "hcsnet",
+                "-l",
+                "hcs_object_api",
+                "-l",
+                "RainbowApi",
+                "-l",
+                "ssl",
+                "-l",
+                "SystemTransform",
+                "-l",
+                "xml2",
+                "-l",
+                "expat",
+                "-l",
+                "hlog",
+                "-l",
+                "analyzedata",
+                "-I",
+                "/c++/hik_obj/inc",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "-std=c99"
+                // "-lstdc++"
+            ],
+            "options": {
+                "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ]
+}

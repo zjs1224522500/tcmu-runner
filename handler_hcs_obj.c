@@ -38,20 +38,25 @@
 #include "tcmur_device.h"
 
 // Use self-define header
+#include "hcs_obj_util.h"
+
 #define MB_UNIT "MB"
 #define KB_UNIT "KB"
+#define GB_UNIT "GB"
 
-#define TCMU_KV_DEMO_DIR "/root/tcmu_kv_demo/"
+#define TCMU_KV_DEMO_DIR "/root/tcmu_kv_demo_obj/"
 
 #define max_num(a, b) ({ a < b ? b : a; })
 #define min_num(a, b) ({ a < b ? a : b; })
 
-struct hikvision_file_state
+struct hcs_obj_state
 {
 	char *iqn;
 	double fragment_size;
 	char *fragment_size_unit;
 	char *path;
+	HCSClient* client;
+	// char* bucket_name;
 };
 
 // 分割后的IO请求结构。
@@ -63,19 +68,20 @@ struct io_segment
 	off_t offset;
 	size_t len;
 };
-static void parse_config_by_array(struct hikvision_file_state *state, char *cfgString);
-int seg_read(struct io_segment *ios, size_t fragment_size);
-int seg_write(struct io_segment *ios, size_t fragment_size);
+static void parse_config_by_array(struct hcs_obj_state *state, char *cfgString);
+int seg_read(HCSClient* client, struct io_segment *ios, size_t fragment_size);
+int seg_write(HCSClient* client, struct io_segment *ios, size_t fragment_size);
 int gen_ios(struct tcmu_device *dev, size_t length, off_t offset, struct io_segment **p_ios);
 size_t ios_2_mem(char *dest, size_t length, struct io_segment *ios, size_t ios_cnt);
 size_t mem_2_ios(void *src, size_t length, struct io_segment *ios, size_t ios_cnt);
 void free_ios(struct io_segment *ios, size_t ios_cnt);
 
-static int hikvision_file_open(struct tcmu_device *dev, bool reopen)
+static int hcs_obj_open(struct tcmu_device *dev, bool reopen)
 {
-	struct hikvision_file_state *state;
+	struct hcs_obj_state *state;
 	char *cfgString;
-	struct hikvision_file_state *hm_private;
+	struct hcs_obj_state *hm_private;
+	// int createBucketResult;
 
 	state = calloc(1, sizeof(*state));
 	if (!state)
@@ -95,6 +101,14 @@ static int hikvision_file_open(struct tcmu_device *dev, bool reopen)
 	tcmu_err("iqn of state: %s\n", state->iqn);
 	tcmu_err("frag size : %lf\n", state->fragment_size);
 	tcmu_err("frag size unit : %s\n", state->fragment_size_unit);
+	if (NULL == state->client) {
+		state->client = createClient();
+	}
+
+	// Create Bucket firstly. 
+	// TODO: Bucket Size / isBucketExisted
+	tcmu_err("Start to create Bucket: %s\n", state->iqn);
+	createBucket(state->client, state->iqn, 1);
 
 	hm_private = tcmur_dev_get_private(dev);
 	tcmu_err("iqn of hm_private: %s\n", hm_private->iqn);
@@ -102,11 +116,13 @@ static int hikvision_file_open(struct tcmu_device *dev, bool reopen)
 	return 0;
 }
 
-static void hikvision_file_close(struct tcmu_device *dev)
+static void hcs_obj_close(struct tcmu_device *dev)
 {
 	// Get the file state of tcmu_device.
-	struct hikvision_file_state *state = tcmur_dev_get_private(dev);
+	struct hcs_obj_state *state = tcmur_dev_get_private(dev);
 
+	// Free hcs_client
+	freeClient(state->client);
 	// free the state
 	free(state);
 }
@@ -122,11 +138,11 @@ static void hikvision_file_close(struct tcmu_device *dev)
  * 
  * return                   the size of read data.
  */
-static int hikvision_file_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
+static int hcs_obj_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 							   struct iovec *iov, size_t iov_cnt, size_t length,
 							   off_t offset)
 {
-	struct hikvision_file_state *state = tcmur_dev_get_private(dev);
+	struct hcs_obj_state *state = tcmur_dev_get_private(dev);
 	struct io_segment *ios;
 	ssize_t ret;
 	size_t ios_cnt = gen_ios(dev, length, offset, &ios);
@@ -134,12 +150,14 @@ static int hikvision_file_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 	int i = 0;
 
 	tcmu_err("Start to read!\n");
-	tcmu_err("[Parameter] Read file with length %zu, offset %ld, iov_cnt %zu.\n", length, offset, iov_cnt);
+	// tcmu_err("[Parameter] Read file with length %zu.\n", length);
+	// tcmu_err("[Parameter] Read file with offset %ld.\n", offset);
+	// tcmu_err("[Parameter] Read file with iov_cnt %zu.\n", iov_cnt);
 
-
+	tcmu_err("Start to seg_read.\n");
 	for (i = 0; i < ios_cnt; ++i)
 	{
-		ret = seg_read(ios + i, state->fragment_size);
+		ret = seg_read(state->client, ios + i, state->fragment_size);
 		if (ret < 0)
 		{
 			tcmu_err("read failed: %m\n");
@@ -148,6 +166,7 @@ static int hikvision_file_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		}
 	}
 
+	tcmu_err("Start to convert the ios to mem.\n");
 	ret = ios_2_mem(buffer, length, ios, ios_cnt);
 	if (ret < 0)
 	{
@@ -156,6 +175,7 @@ static int hikvision_file_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 
+	tcmu_err("Start to copy the mem to iovec.\n");
 	ret = tcmu_memcpy_into_iovec(iov, iov_cnt, buffer, length);
 	if (ret < 0)
 	{
@@ -164,7 +184,9 @@ static int hikvision_file_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 
+	// tcmu_err("Start to free buffer pointer. %p\n", buffer);
 	free(buffer);
+	// tcmu_err("Start to free ios pointer.\n");
 	free_ios(ios, ios_cnt);
 	ret = TCMU_STS_OK;
 	tcmu_err("Stop reading!\n");
@@ -182,11 +204,11 @@ static int hikvision_file_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
  * 
  * return                   the size of read data.
  */
-static int hikvision_file_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
+static int hcs_obj_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 								struct iovec *iov, size_t iov_cnt, size_t length,
 								off_t offset)
 {
-	struct hikvision_file_state *state = tcmur_dev_get_private(dev);
+	struct hcs_obj_state *state = tcmur_dev_get_private(dev);
 	struct io_segment *ios;
 	ssize_t ret;
 	int i = 0;
@@ -194,9 +216,12 @@ static int hikvision_file_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 	size_t ios_cnt = gen_ios(dev, length, offset, &ios);
 
 	tcmu_err("Start to write!\n");
-	tcmu_err("[Parameter] Write file with length %zu, offset %ld, iov_cnt %zu.\n", length, offset, iov_cnt);
+	// tcmu_err("[Parameter] Write file with length %zu.\n", length);
+	// tcmu_err("[Parameter] Write file with offset %ld.\n", offset);
+	// tcmu_err("[Parameter] Write file with iov_cnt %zu.\n", iov_cnt);
 
 	//  完成iov->mem的数据转换
+	tcmu_err("Start to copy the iovec to mem.\n");
 	ret = tcmu_memcpy_from_iovec(buffer, length, iov, iov_cnt);
 	if (ret < 0)
 	{
@@ -205,7 +230,10 @@ static int hikvision_file_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 
+	// tcmu_err("Buffer content is %s.\n", buffer);
+	tcmu_err("Buffer length is %zu. And iovc[0] length is %zu.\n", sizeof(buffer) / sizeof(char), iov->iov_len);
 	//  完成mem->ios的数据转换
+	tcmu_err("Start to convert the mem to ios.\n");
 	ret = mem_2_ios(buffer, length, ios, ios_cnt);
 	if (ret < 0)
 	{
@@ -214,9 +242,10 @@ static int hikvision_file_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 	//  将ios结构中的数据通过seg_write函数写入后端存储。
+	tcmu_err("Start to seg_write with ios_cnt %zu.\n", ios_cnt);
 	for (i = 0; i < ios_cnt; ++i)
 	{
-		ret = seg_write(ios + i, state->fragment_size);
+		ret = seg_write(state->client, ios + i, state->fragment_size);
 		if (ret < 0)
 		{
 			tcmu_err("write failed: %m\n");
@@ -225,14 +254,16 @@ static int hikvision_file_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		}
 	}
 	//回收mem空间和ios结构。
+	// tcmu_err("Start to free buffer pointer. %p\n", buffer);
 	free(buffer);
+	// tcmu_err("Start to free ios pointer.\n");
 	free_ios(ios, ios_cnt);
 	tcmu_err("Stop writing!\n");
 	ret = TCMU_STS_OK;
 	return ret;
 }
 
-static int hikvision_file_flush(struct tcmu_device *dev, struct tcmur_cmd *cmd)
+static int hcs_obj_flush(struct tcmu_device *dev, struct tcmur_cmd *cmd)
 {
 	// Get the file state of tcmu_device.
 	int ret;
@@ -240,7 +271,7 @@ static int hikvision_file_flush(struct tcmu_device *dev, struct tcmur_cmd *cmd)
 	return ret;
 }
 
-static int hikvision_file_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
+static int hcs_obj_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_info *cfg)
 {
 	switch (cfg->type)
 	{
@@ -260,40 +291,39 @@ static int hikvision_file_reconfig(struct tcmu_device *dev, struct tcmulib_cfg_i
 	}
 }
 
-static const char hikvision_file_cfg_desc[] =
+static const char hcs_obj_cfg_desc[] =
 	"The format of config string should be '/iqn/path/lun-name/frag_size'.";
 
 // Init the tcmu_handler with given static method defined in this class.
-static struct tcmur_handler hikvision_file_handler = {
-	.cfg_desc = hikvision_file_cfg_desc,
+static struct tcmur_handler hcs_obj_handler = {
+	.cfg_desc = hcs_obj_cfg_desc,
 
-	.reconfig = hikvision_file_reconfig,
+	.reconfig = hcs_obj_reconfig,
 
-	.open = hikvision_file_open,
-	.close = hikvision_file_close,
-	.read = hikvision_file_read,
-	.write = hikvision_file_write,
-	.flush = hikvision_file_flush,
-	.name = "HikVison-File-Storage-backed Handler",
-	.subtype = "Hikvision_File",
-	.nr_threads = 2,
+	.open = hcs_obj_open,
+	.close = hcs_obj_close,
+	.read = hcs_obj_read,
+	.write = hcs_obj_write,
+	.flush = hcs_obj_flush,
+	.name = "HCS-Obj-Storage-backed Handler",
+	.subtype = "hcs_obj",
+	.nr_threads = 1,
 };
 
 /* Entry point must be named "handler_init". */
 int handler_init(void)
 {
-	// Regist the hikvision_handler to running_handler list
-	return tcmur_register_handler(&hikvision_file_handler);
+	// Regist the hcs_handler to running_handler list
+	return tcmur_register_handler(&hcs_obj_handler);
 }
 
-static void parse_config_by_array(struct hikvision_file_state *state, char *cfgString)
+static void parse_config_by_array(struct hcs_obj_state *state, char *cfgString)
 {
 	int i, length, virgule_symbol_count, iqn_size, lun_size, frag_size;
 	char *iqn = (char *)calloc(100, sizeof(char));
 	char *lun = (char *)calloc(50, sizeof(char));
 	char *frag = (char *)calloc(10, sizeof(char));
 	char *path = (char *)calloc(150, sizeof(char));
-	;
 	length = strlen(cfgString);
 	virgule_symbol_count = 0;
 	iqn_size = 0;
@@ -347,22 +377,40 @@ static void parse_config_by_array(struct hikvision_file_state *state, char *cfgS
  * 这个函数是使用文件对KV存储读服务的仿真。这里用一个文件对应一个对象，文件名即键值。
  * 如果要换成mysql作为底层存储，请在这个函数中改动。
  */
-int OBJ_read(char *key, char *value, size_t fragment_size)
+int OBJ_read(HCSClient* client, char *key, char *value, size_t fragment_size)
 {
 	char path[512];
-	int fd;
+	char* keyCopy;
+	char* delim;
+	char* BucketName;
+	FileBuffer* buffer;
+	// int fd;
+	// int downloadResult;
 	ssize_t ret;
 	sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
 	
-	fd = open(path, O_CREAT | O_RDONLY, S_IRUSR | S_IWUSR);
-	if (fd == -1)
-	{
-		tcmu_err("could not open %s: %m\n", path);
-		return -1;
-	}
-	ret = read(fd, value, fragment_size);
-	close(fd);
-	tcmu_err("Read ret :%ld\n", ret);
+	// download the file with given path.
+	keyCopy = strdup(key);
+	delim = "_";
+	BucketName = strtok(keyCopy, delim);
+
+
+	buffer = getObjectToBuffer(client, BucketName, key);
+	value = buffer->data;
+	ret = buffer->data_len;
+
+	// tcmu_err("Download %s Result: %d\n", path, downloadResult);
+	free(keyCopy);
+
+	// fd = open(path, O_CREAT | O_RDONLY, S_IRUSR | S_IWUSR);
+	// if (fd == -1)
+	// {
+	// 	tcmu_err("could not open %s: %m\n", path);
+	// 	return -1;
+	// }
+	// tcmu_err("Read with value length : %zu\n", fragment_size);
+	// ret = read(fd, value, fragment_size);
+	// close(fd);
 
 	return ret;
 }
@@ -375,20 +423,38 @@ int OBJ_read(char *key, char *value, size_t fragment_size)
  * 这个函数是使用文件对KV存储写服务的仿真。这里用一个文件对应一个对象，文件名即键值。
  * 如果要换成mysql作为底层存储，请在这个函数中改动。
  */
-int OBJ_write(char *key, char *value, size_t fragment_size)
+int OBJ_write(HCSClient* client, char *key, char *value, size_t fragment_size)
 {
 	char path[512];
-	int fd;
+	char* keyCopy;
+	char* delim;
+	char* BucketName;
+	// int fd;
 	ssize_t ret;
-	fd = open(path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-	if (fd == -1)
-	{
-		tcmu_err("could not open %s: %m\n", path);
-		return -1;
-	}
-	ret = write(fd, value, fragment_size);
-	close(fd);
-	tcmu_err("Write ret :%ld\n", ret);
+	sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
+	// fd = open(path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
+	// if (fd == -1)
+	// {
+	// 	tcmu_err("could not open %s: %m\n", path);
+	// 	return -1;
+	// }
+
+	// tcmu_err("Write with value length : %zu\n", fragment_size);
+	// ret = write(fd, value, fragment_size);
+	// close(fd);
+
+    // upload the file to minio
+	keyCopy = strdup(key);
+	delim = "_";
+	BucketName = strtok(keyCopy, delim);
+
+	// Capture the io write.
+	writeObjectFromBuffer(client, BucketName, key, value, fragment_size);
+	writeBufferToFile(value, fragment_size, path);
+	ret = fragment_size;
+
+	free(keyCopy);
+
 	return ret;
 }
 
@@ -428,7 +494,7 @@ int gen_ios(struct tcmu_device *dev, size_t length, off_t offset,
 {
 	int i = 0;
 	//获取iqn、条带大小fragment_size
-	struct hikvision_file_state *state = tcmur_dev_get_private(dev);
+	struct hcs_obj_state *state = tcmur_dev_get_private(dev);
 	//计算条带编号
 	int s_count = offset / state->fragment_size;
 	int e_count = (offset + length - 1) / state->fragment_size;
@@ -462,9 +528,7 @@ void free_ios(struct io_segment *ios, size_t ios_cnt)
 	int i = 0;
 	for (i = 0; i < ios_cnt; ++i)
 	{
-		tcmu_err("Start to free ios key pointer %p.\n", (ios + i)->key);
 		free((ios + i)->key);
-		tcmu_err("Start to free ios value pointer %p.\n", (ios + i)->value);
 		free((ios + i)->value);
 	}
 	free(ios);
@@ -536,12 +600,12 @@ size_t ios_2_mem(char *dest, size_t length,
  * 该函数通过调用OBJ_read，完成将单个ios中的数据从KV数据库中读取出来的任务。
  * 根据key值读取出相关数据后，我们根据ios->offset截取需要的数据数据，保存在ios->value中。
  */
-int seg_read(struct io_segment *ios, size_t fragment_size)
+int seg_read(HCSClient* client, struct io_segment *ios, size_t fragment_size)
 {
 	char *value = (char *)malloc(fragment_size);
 	int ret;
 	memset(value, 0, fragment_size);
-	ret = OBJ_read(ios->key, value, fragment_size);
+	ret = OBJ_read(client, ios->key, value, fragment_size);
 	memcpy(ios->value, value + ios->offset % fragment_size, ios->len);
 	free(value);
 	return ret;
@@ -555,14 +619,14 @@ int seg_read(struct io_segment *ios, size_t fragment_size)
  * 该函数通过调用OBJ_read，完成将单个ios中的数据写入KV数据库的任务。
  * 先key值读取出相关对象，我们根据ios->offset和ios->value修改对象，再写回KV数据库中。
  */
-int seg_write(struct io_segment *ios, size_t fragment_size)
+int seg_write(HCSClient* client, struct io_segment *ios, size_t fragment_size)
 {
 	char *value = (char *)malloc(fragment_size);
 	int ret;
 	memset(value, 0, fragment_size);
-	OBJ_read(ios->key, value, fragment_size);
+	OBJ_read(client, ios->key, value, fragment_size);
 	memcpy(value + ios->offset % fragment_size, ios->value, ios->len);
-	ret = OBJ_write(ios->key, value, fragment_size);
+	ret = OBJ_write(client, ios->key, value, fragment_size);
 	free(value);
 	return ret;
 }

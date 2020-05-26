@@ -1,0 +1,168 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"hasInstallRule" : true,
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "tcmu-runner",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3,
+						4,
+						5,
+						6,
+						7,
+						8,
+						9,
+						10,
+						11,
+						12
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 0,
+					"id" : "consumer::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-consumer-Debug-1252357c33a6f97f26fb.json",
+					"name" : "consumer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "cscope::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-cscope-Debug-1a8027769f57cbe92f5b.json",
+					"name" : "cscope",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_file::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_file-Debug-03f7e4f98781bc1cb581.json",
+					"name" : "handler_file",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_file_optical::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_file_optical-Debug-2ede24af91a644dbad58.json",
+					"name" : "handler_file_optical",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_file_zbc::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_file_zbc-Debug-826cc942975a569b5efc.json",
+					"name" : "handler_file_zbc",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_glfs::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_glfs-Debug-4e47a66741bf8ff636a4.json",
+					"name" : "handler_glfs",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_hcs_obj::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_hcs_obj-Debug-e84278f081839f0dddda.json",
+					"name" : "handler_hcs_obj",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_qcow::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_qcow-Debug-4457969b1f846004e930.json",
+					"name" : "handler_qcow",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "handler_rbd::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-handler_rbd-Debug-d703994ca271f6c26762.json",
+					"name" : "handler_rbd",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tcmu::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tcmu-Debug-26880b8d5d7daafeccd5.json",
+					"name" : "tcmu",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tcmu-runner::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tcmu-runner-Debug-39bcf7fcd5c7176e253a.json",
+					"name" : "tcmu-runner",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tcmu-synthesizer::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tcmu-synthesizer-Debug-d395c3dc4b04b6909c83.json",
+					"name" : "tcmu-synthesizer",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "tcmu_static::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-tcmu_static-Debug-853e0d3eec9b4cf5a863.json",
+					"name" : "tcmu_static",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/root/tcmu-runner/build",
+		"source" : "/root/tcmu-runner"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 0
+	}
+}

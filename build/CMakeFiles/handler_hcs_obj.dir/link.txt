@@ -1,0 +1,1 @@
+/opt/rh/devtoolset-7/root/usr/bin/cc -fPIC  -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g  -shared -Wl,-soname,handler_hcs_obj.so -o handler_hcs_obj.so CMakeFiles/handler_hcs_obj.dir/handler_hcs_obj.c.o   -L/c++/DistBlock/hik_obj/lib  -Wl,-rpath,/c++/DistBlock/hik_obj/lib: -lhcs_obj_util 

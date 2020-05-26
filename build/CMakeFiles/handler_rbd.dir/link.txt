@@ -1,0 +1,1 @@
+/opt/rh/devtoolset-7/root/usr/bin/cc -fPIC  -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g  -shared -Wl,-soname,handler_rbd.so -o handler_rbd.so CMakeFiles/handler_rbd.dir/rbd.c.o   -L/c++/DistBlock/hik_obj/lib  -Wl,-rpath,/c++/DistBlock/hik_obj/lib: -lrbd -ltcmalloc 

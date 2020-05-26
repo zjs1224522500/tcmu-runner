@@ -1,0 +1,197 @@
+[
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_qcow_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -DHAVE_LINUX_FALLOC -o CMakeFiles/handler_qcow.dir/qcow.c.o   -c /root/tcmu-runner/qcow.c",
+  "file": "/root/tcmu-runner/qcow.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_glfs_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_glfs.dir/glfs.c.o   -c /root/tcmu-runner/glfs.c",
+  "file": "/root/tcmu-runner/glfs.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_rbd_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_rbd.dir/rbd.c.o   -c /root/tcmu-runner/rbd.c",
+  "file": "/root/tcmu-runner/rbd.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/strlcpy.c.o   -c /root/tcmu-runner/strlcpy.c",
+  "file": "/root/tcmu-runner/strlcpy.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/configfs.c.o   -c /root/tcmu-runner/configfs.c",
+  "file": "/root/tcmu-runner/configfs.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/api.c.o   -c /root/tcmu-runner/api.c",
+  "file": "/root/tcmu-runner/api.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/libtcmu.c.o   -c /root/tcmu-runner/libtcmu.c",
+  "file": "/root/tcmu-runner/libtcmu.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/libtcmu-register.c.o   -c /root/tcmu-runner/libtcmu-register.c",
+  "file": "/root/tcmu-runner/libtcmu-register.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/tcmuhandler-generated.c.o   -c /root/tcmu-runner/tcmuhandler-generated.c",
+  "file": "/root/tcmu-runner/tcmuhandler-generated.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/libtcmu_log.c.o   -c /root/tcmu-runner/libtcmu_log.c",
+  "file": "/root/tcmu-runner/libtcmu_log.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/libtcmu_config.c.o   -c /root/tcmu-runner/libtcmu_config.c",
+  "file": "/root/tcmu-runner/libtcmu_config.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/libtcmu_time.c.o   -c /root/tcmu-runner/libtcmu_time.c",
+  "file": "/root/tcmu-runner/libtcmu_time.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/strlcpy.c.o   -c /root/tcmu-runner/strlcpy.c",
+  "file": "/root/tcmu-runner/strlcpy.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/configfs.c.o   -c /root/tcmu-runner/configfs.c",
+  "file": "/root/tcmu-runner/configfs.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/api.c.o   -c /root/tcmu-runner/api.c",
+  "file": "/root/tcmu-runner/api.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/libtcmu.c.o   -c /root/tcmu-runner/libtcmu.c",
+  "file": "/root/tcmu-runner/libtcmu.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/libtcmu-register.c.o   -c /root/tcmu-runner/libtcmu-register.c",
+  "file": "/root/tcmu-runner/libtcmu-register.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/tcmuhandler-generated.c.o   -c /root/tcmu-runner/tcmuhandler-generated.c",
+  "file": "/root/tcmu-runner/tcmuhandler-generated.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/libtcmu_log.c.o   -c /root/tcmu-runner/libtcmu_log.c",
+  "file": "/root/tcmu-runner/libtcmu_log.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/libtcmu_config.c.o   -c /root/tcmu-runner/libtcmu_config.c",
+  "file": "/root/tcmu-runner/libtcmu_config.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu_static.dir/libtcmu_time.c.o   -c /root/tcmu-runner/libtcmu_time.c",
+  "file": "/root/tcmu-runner/libtcmu_time.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/tcmur_cmd_handler.c.o   -c /root/tcmu-runner/tcmur_cmd_handler.c",
+  "file": "/root/tcmu-runner/tcmur_cmd_handler.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/tcmur_aio.c.o   -c /root/tcmu-runner/tcmur_aio.c",
+  "file": "/root/tcmu-runner/tcmur_aio.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/tcmur_device.c.o   -c /root/tcmu-runner/tcmur_device.c",
+  "file": "/root/tcmu-runner/tcmur_device.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/target.c.o   -c /root/tcmu-runner/target.c",
+  "file": "/root/tcmu-runner/target.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/alua.c.o   -c /root/tcmu-runner/alua.c",
+  "file": "/root/tcmu-runner/alua.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
+  "file": "/root/tcmu-runner/scsi.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/main.c.o   -c /root/tcmu-runner/main.c",
+  "file": "/root/tcmu-runner/main.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-runner.dir/tcmuhandler-generated.c.o   -c /root/tcmu-runner/tcmuhandler-generated.c",
+  "file": "/root/tcmu-runner/tcmuhandler-generated.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file.dir/file_example.c.o   -c /root/tcmu-runner/file_example.c",
+  "file": "/root/tcmu-runner/file_example.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_hcs_obj_EXPORTS -I/root/tcmu-runner/ccan -I/c++/DistBlock/hik_obj/inc   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_hcs_obj.dir/handler_hcs_obj.c.o   -c /root/tcmu-runner/handler_hcs_obj.c",
+  "file": "/root/tcmu-runner/handler_hcs_obj.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/consumer.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
+  "file": "/root/tcmu-runner/scsi.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/consumer.dir/consumer.c.o   -c /root/tcmu-runner/consumer.c",
+  "file": "/root/tcmu-runner/consumer.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_zbc_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_zbc.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
+  "file": "/root/tcmu-runner/scsi.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_zbc_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_zbc.dir/file_zbc.c.o   -c /root/tcmu-runner/file_zbc.c",
+  "file": "/root/tcmu-runner/file_zbc.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-synthesizer.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
+  "file": "/root/tcmu-runner/scsi.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-synthesizer.dir/tcmu-synthesizer.c.o   -c /root/tcmu-runner/tcmu-synthesizer.c",
+  "file": "/root/tcmu-runner/tcmu-synthesizer.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_optical_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_optical.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
+  "file": "/root/tcmu-runner/scsi.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_optical_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_optical.dir/file_optical.c.o   -c /root/tcmu-runner/file_optical.c",
+  "file": "/root/tcmu-runner/file_optical.c"
+}
+]

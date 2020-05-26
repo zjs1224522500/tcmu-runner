@@ -1,0 +1,1 @@
+/opt/rh/devtoolset-7/root/usr/bin/cc -fPIC  -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g  -shared -Wl,-soname,handler_file.so -o handler_file.so CMakeFiles/handler_file.dir/file_example.c.o   -L/c++/DistBlock/hik_obj/lib 
