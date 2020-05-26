@@ -150,11 +150,8 @@ static int hcs_obj_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 	int i = 0;
 
 	tcmu_err("Start to read!\n");
-	// tcmu_err("[Parameter] Read file with length %zu.\n", length);
-	// tcmu_err("[Parameter] Read file with offset %ld.\n", offset);
-	// tcmu_err("[Parameter] Read file with iov_cnt %zu.\n", iov_cnt);
+	tcmu_err("[Parameter] Read with length %zu, offset %ld, iov_cnt %zu.\n", length, offset, iov_cnt);
 
-	tcmu_err("Start to seg_read.\n");
 	for (i = 0; i < ios_cnt; ++i)
 	{
 		ret = seg_read(state->client, ios + i, state->fragment_size);
@@ -166,7 +163,6 @@ static int hcs_obj_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		}
 	}
 
-	tcmu_err("Start to convert the ios to mem.\n");
 	ret = ios_2_mem(buffer, length, ios, ios_cnt);
 	if (ret < 0)
 	{
@@ -175,7 +171,6 @@ static int hcs_obj_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 
-	tcmu_err("Start to copy the mem to iovec.\n");
 	ret = tcmu_memcpy_into_iovec(iov, iov_cnt, buffer, length);
 	if (ret < 0)
 	{
@@ -184,9 +179,7 @@ static int hcs_obj_read(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 
-	// tcmu_err("Start to free buffer pointer. %p\n", buffer);
 	free(buffer);
-	// tcmu_err("Start to free ios pointer.\n");
 	free_ios(ios, ios_cnt);
 	ret = TCMU_STS_OK;
 	tcmu_err("Stop reading!\n");
@@ -216,12 +209,9 @@ static int hcs_obj_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 	size_t ios_cnt = gen_ios(dev, length, offset, &ios);
 
 	tcmu_err("Start to write!\n");
-	// tcmu_err("[Parameter] Write file with length %zu.\n", length);
-	// tcmu_err("[Parameter] Write file with offset %ld.\n", offset);
-	// tcmu_err("[Parameter] Write file with iov_cnt %zu.\n", iov_cnt);
+	tcmu_err("[Parameter] Write with length %zu, offset %ld, iov_cnt %zu.\n", length, offset, iov_cnt);
 
 	//  完成iov->mem的数据转换
-	tcmu_err("Start to copy the iovec to mem.\n");
 	ret = tcmu_memcpy_from_iovec(buffer, length, iov, iov_cnt);
 	if (ret < 0)
 	{
@@ -230,10 +220,7 @@ static int hcs_obj_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 
-	// tcmu_err("Buffer content is %s.\n", buffer);
-	tcmu_err("Buffer length is %zu. And iovc[0] length is %zu.\n", sizeof(buffer) / sizeof(char), iov->iov_len);
 	//  完成mem->ios的数据转换
-	tcmu_err("Start to convert the mem to ios.\n");
 	ret = mem_2_ios(buffer, length, ios, ios_cnt);
 	if (ret < 0)
 	{
@@ -242,7 +229,6 @@ static int hcs_obj_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		return ret;
 	}
 	//  将ios结构中的数据通过seg_write函数写入后端存储。
-	tcmu_err("Start to seg_write with ios_cnt %zu.\n", ios_cnt);
 	for (i = 0; i < ios_cnt; ++i)
 	{
 		ret = seg_write(state->client, ios + i, state->fragment_size);
@@ -254,9 +240,7 @@ static int hcs_obj_write(struct tcmu_device *dev, struct tcmur_cmd *cmd,
 		}
 	}
 	//回收mem空间和ios结构。
-	// tcmu_err("Start to free buffer pointer. %p\n", buffer);
 	free(buffer);
-	// tcmu_err("Start to free ios pointer.\n");
 	free_ios(ios, ios_cnt);
 	tcmu_err("Stop writing!\n");
 	ret = TCMU_STS_OK;
@@ -398,19 +382,9 @@ int OBJ_read(HCSClient* client, char *key, char *value, size_t fragment_size)
 	buffer = getObjectToBuffer(client, BucketName, key);
 	value = buffer->data;
 	ret = buffer->data_len;
+	tcmu_err("Read ret :%ld\n", ret);
 
-	// tcmu_err("Download %s Result: %d\n", path, downloadResult);
 	free(keyCopy);
-
-	// fd = open(path, O_CREAT | O_RDONLY, S_IRUSR | S_IWUSR);
-	// if (fd == -1)
-	// {
-	// 	tcmu_err("could not open %s: %m\n", path);
-	// 	return -1;
-	// }
-	// tcmu_err("Read with value length : %zu\n", fragment_size);
-	// ret = read(fd, value, fragment_size);
-	// close(fd);
 
 	return ret;
 }
@@ -432,16 +406,6 @@ int OBJ_write(HCSClient* client, char *key, char *value, size_t fragment_size)
 	// int fd;
 	ssize_t ret;
 	sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
-	// fd = open(path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
-	// if (fd == -1)
-	// {
-	// 	tcmu_err("could not open %s: %m\n", path);
-	// 	return -1;
-	// }
-
-	// tcmu_err("Write with value length : %zu\n", fragment_size);
-	// ret = write(fd, value, fragment_size);
-	// close(fd);
 
     // upload the file to minio
 	keyCopy = strdup(key);
@@ -452,6 +416,7 @@ int OBJ_write(HCSClient* client, char *key, char *value, size_t fragment_size)
 	writeObjectFromBuffer(client, BucketName, key, value, fragment_size);
 	writeBufferToFile(value, fragment_size, path);
 	ret = fragment_size;
+	tcmu_err("Write ret :%ld\n", ret);
 
 	free(keyCopy);
 
