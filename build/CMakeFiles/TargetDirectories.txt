@@ -4,6 +4,7 @@
 /root/tcmu-runner/build/CMakeFiles/handler_qcow.dir
 /root/tcmu-runner/build/CMakeFiles/handler_glfs.dir
 /root/tcmu-runner/build/CMakeFiles/handler_rbd.dir
+/root/tcmu-runner/build/CMakeFiles/handler_file_zbc.dir
 /root/tcmu-runner/build/CMakeFiles/tcmu.dir
 /root/tcmu-runner/build/CMakeFiles/install.dir
 /root/tcmu-runner/build/CMakeFiles/tcmu_static.dir
@@ -14,6 +15,6 @@
 /root/tcmu-runner/build/CMakeFiles/handler_hcs_obj.dir
 /root/tcmu-runner/build/CMakeFiles/cscope.dir
 /root/tcmu-runner/build/CMakeFiles/consumer.dir
-/root/tcmu-runner/build/CMakeFiles/handler_file_zbc.dir
 /root/tcmu-runner/build/CMakeFiles/tcmu-synthesizer.dir
+/root/tcmu-runner/build/CMakeFiles/handler_hikvision_file.dir
 /root/tcmu-runner/build/CMakeFiles/handler_file_optical.dir

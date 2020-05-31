@@ -38,10 +38,13 @@
 #include "tcmur_device.h"
 
 // Use self-define header
+#include "hcs_obj_util.h"
+
 #define MB_UNIT "MB"
 #define KB_UNIT "KB"
 
 #define TCMU_KV_DEMO_DIR "/root/tcmu_kv_demo/"
+#define TCMU_KV_DEMO_TEMP_DIR "/root/tcmu_kv_temp_demo/"
 
 #define max_num(a, b) ({ a < b ? b : a; })
 #define min_num(a, b) ({ a < b ? a : b; })
@@ -276,7 +279,7 @@ static struct tcmur_handler hikvision_file_handler = {
 	.flush = hikvision_file_flush,
 	.name = "HikVison-File-Storage-backed Handler",
 	.subtype = "Hikvision_File",
-	.nr_threads = 2,
+	.nr_threads = 1,
 };
 
 /* Entry point must be named "handler_init". */
@@ -360,6 +363,7 @@ int OBJ_read(char *key, char *value, size_t fragment_size)
 		tcmu_err("could not open %s: %m\n", path);
 		return -1;
 	}
+	resultHandler(0, "[Req] Read file", path);
 	ret = read(fd, value, fragment_size);
 	close(fd);
 	tcmu_err("Read ret :%ld\n", ret);
@@ -380,13 +384,20 @@ int OBJ_write(char *key, char *value, size_t fragment_size)
 	char path[512];
 	int fd;
 	ssize_t ret;
+	char temp_path[200];
+	sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
+	sprintf(temp_path, "%s%s", TCMU_KV_DEMO_TEMP_DIR, key);
+
 	fd = open(path, O_CREAT | O_RDWR, S_IRUSR | S_IWUSR);
 	if (fd == -1)
 	{
 		tcmu_err("could not open %s: %m\n", path);
 		return -1;
 	}
+
+	resultHandler(0, "[Req] Write file", path);
 	ret = write(fd, value, fragment_size);
+	writeBufferToFile(value, fragment_size, temp_path);
 	close(fd);
 	tcmu_err("Write ret :%ld\n", ret);
 	return ret;

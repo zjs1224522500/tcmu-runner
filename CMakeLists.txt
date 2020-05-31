@@ -223,19 +223,21 @@ install(TARGETS handler_hcs_obj DESTINATION ${CMAKE_INSTALL_LIBDIR}/tcmu-runner)
 # # target_link_libraries(handler_hikvision_file ${S3SHAREDC})
 # install(TARGETS handler_hikvision_obj DESTINATION ${CMAKE_INSTALL_LIBDIR}/tcmu-runner)
 
-# # Stuff for building the handler_hikvision_file handler
-# add_library(handler_hikvision_file
-#   SHARED
-#   handler_hikvision_file.c
-#   )
-# set_target_properties(handler_hikvision_file
-#   PROPERTIES
-#   PREFIX ""
-#   )
-# target_include_directories(handler_hikvision_file
-#   PUBLIC ${PROJECT_SOURCE_DIR}/ccan
-#   )
-# install(TARGETS handler_hikvision_file DESTINATION ${CMAKE_INSTALL_LIBDIR}/tcmu-runner)
+# Stuff for building the handler_hikvision_file handler
+add_library(handler_hikvision_file
+  SHARED
+  handler_hikvision_file.c
+  )
+set_target_properties(handler_hikvision_file
+  PROPERTIES
+  PREFIX ""
+  )
+target_include_directories(handler_hikvision_file
+  PUBLIC ${PROJECT_SOURCE_DIR}/ccan
+  /c++/DistBlock/hik_obj/inc/
+  )
+target_link_libraries(handler_hikvision_file -lhcs_obj_util)
+install(TARGETS handler_hikvision_file DESTINATION ${CMAKE_INSTALL_LIBDIR}/tcmu-runner)
 
 if (with-fbo)
 	# Stuff for building the file optical handler

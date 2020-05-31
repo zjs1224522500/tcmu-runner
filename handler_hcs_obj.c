@@ -43,7 +43,7 @@
 #define MB_UNIT "MB"
 #define KB_UNIT "KB"
 #define GB_UNIT "GB"
-
+#define DELIM "_"
 #define TCMU_KV_DEMO_DIR "/root/tcmu_kv_demo_obj/"
 
 #define max_num(a, b) ({ a < b ? b : a; })
@@ -102,6 +102,7 @@ static int hcs_obj_open(struct tcmu_device *dev, bool reopen)
 	tcmu_err("frag size : %lf\n", state->fragment_size);
 	tcmu_err("frag size unit : %s\n", state->fragment_size_unit);
 	if (NULL == state->client) {
+		tcmu_err("Start to create HCS Client\n");
 		state->client = createClient();
 	}
 
@@ -120,9 +121,11 @@ static void hcs_obj_close(struct tcmu_device *dev)
 {
 	// Get the file state of tcmu_device.
 	struct hcs_obj_state *state = tcmur_dev_get_private(dev);
-
+	tcmu_err("Close block device: %s\n", state->iqn);
 	// Free hcs_client
-	freeClient(state->client);
+	if (NULL != state->client) {
+		freeClient(state->client);
+	}
 	// free the state
 	free(state);
 }
@@ -251,6 +254,7 @@ static int hcs_obj_flush(struct tcmu_device *dev, struct tcmur_cmd *cmd)
 {
 	// Get the file state of tcmu_device.
 	int ret;
+	tcmu_err("Start flush!\n");
 	ret = TCMU_STS_OK;
 	return ret;
 }
@@ -363,28 +367,26 @@ static void parse_config_by_array(struct hcs_obj_state *state, char *cfgString)
  */
 int OBJ_read(HCSClient* client, char *key, char *value, size_t fragment_size)
 {
-	char path[512];
 	char* keyCopy;
-	char* delim;
 	char* BucketName;
 	FileBuffer* buffer;
-	// int fd;
-	// int downloadResult;
 	ssize_t ret;
-	sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
+	// char path[128];
+	// sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
 	
 	// download the file with given path.
 	keyCopy = strdup(key);
-	delim = "_";
-	BucketName = strtok(keyCopy, delim);
+	BucketName = strtok(keyCopy, DELIM);
 
-
-	buffer = getObjectToBuffer(client, BucketName, key);
+	resultHandler(0, "[Req] Read obj", key);
+	buffer = getObjectToBuffer(client, BucketName, key, fragment_size);
+	// buffer = getBufferFromFile(path);
 	value = buffer->data;
 	ret = buffer->data_len;
 	tcmu_err("Read ret :%ld\n", ret);
 
 	free(keyCopy);
+	keyCopy = NULL;
 
 	return ret;
 }
@@ -399,26 +401,26 @@ int OBJ_read(HCSClient* client, char *key, char *value, size_t fragment_size)
  */
 int OBJ_write(HCSClient* client, char *key, char *value, size_t fragment_size)
 {
-	char path[512];
-	char* keyCopy;
-	char* delim;
-	char* BucketName;
-	// int fd;
 	ssize_t ret;
-	sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
+	char* keyCopy;
+	char* BucketName;
+	// char path[128];
+	// // int fd;
+	// sprintf(path, "%s%s", TCMU_KV_DEMO_DIR, key);
 
     // upload the file to minio
 	keyCopy = strdup(key);
-	delim = "_";
-	BucketName = strtok(keyCopy, delim);
+	BucketName = strtok(keyCopy, DELIM);
 
 	// Capture the io write.
+	resultHandler(0, "[Req] Write obj", key);
 	writeObjectFromBuffer(client, BucketName, key, value, fragment_size);
-	writeBufferToFile(value, fragment_size, path);
+	// writeBufferToFile(value, fragment_size, path);
 	ret = fragment_size;
 	tcmu_err("Write ret :%ld\n", ret);
 
 	free(keyCopy);
+	keyCopy = NULL;
 
 	return ret;
 }
@@ -474,7 +476,7 @@ int gen_ios(struct tcmu_device *dev, size_t length, off_t offset,
 		current_ios = *p_ios + i - s_count;
 		current_ios->offset = max_num(offset, i * state->fragment_size);
 		current_ios->len = min_num(offset + length, (i + 1) * state->fragment_size) - current_ios->offset;
-		current_ios->key = (char *)malloc(1024 * sizeof(char));
+		current_ios->key = (char *)malloc(128 * sizeof(char));
 		current_ios->value = (char *)malloc(state->fragment_size);
 		gen_key(state->iqn, current_ios->offset, state->fragment_size, current_ios->key);
 	}

@@ -16,6 +16,16 @@
 },
 {
   "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_zbc_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_zbc.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
+  "file": "/root/tcmu-runner/scsi.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_zbc_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_zbc.dir/file_zbc.c.o   -c /root/tcmu-runner/file_zbc.c",
+  "file": "/root/tcmu-runner/file_zbc.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
   "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dtcmu_EXPORTS -I/usr/include/libnl3 -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/tcmu.dir/strlcpy.c.o   -c /root/tcmu-runner/strlcpy.c",
   "file": "/root/tcmu-runner/strlcpy.c"
 },
@@ -166,16 +176,6 @@
 },
 {
   "directory": "/root/tcmu-runner/build",
-  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_zbc_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_zbc.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
-  "file": "/root/tcmu-runner/scsi.c"
-},
-{
-  "directory": "/root/tcmu-runner/build",
-  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_file_zbc_EXPORTS -I/root/tcmu-runner/ccan   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_file_zbc.dir/file_zbc.c.o   -c /root/tcmu-runner/file_zbc.c",
-  "file": "/root/tcmu-runner/file_zbc.c"
-},
-{
-  "directory": "/root/tcmu-runner/build",
   "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-synthesizer.dir/scsi.c.o   -c /root/tcmu-runner/scsi.c",
   "file": "/root/tcmu-runner/scsi.c"
 },
@@ -183,6 +183,11 @@
   "directory": "/root/tcmu-runner/build",
   "command": "/opt/rh/devtoolset-7/root/usr/bin/cc  -I/root/tcmu-runner/build -I/usr/include/gio-unix-2.0 -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/root/tcmu-runner/ccan -I/usr/include/libnl3   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g   -o CMakeFiles/tcmu-synthesizer.dir/tcmu-synthesizer.c.o   -c /root/tcmu-runner/tcmu-synthesizer.c",
   "file": "/root/tcmu-runner/tcmu-synthesizer.c"
+},
+{
+  "directory": "/root/tcmu-runner/build",
+  "command": "/opt/rh/devtoolset-7/root/usr/bin/cc -Dhandler_hikvision_file_EXPORTS -I/root/tcmu-runner/ccan -I/c++/DistBlock/hik_obj/inc   -Werror -Wall -Wdeclaration-after-statement -std=c99 -fno-builtin-malloc -fno-builtin-calloc -fno-builtin-realloc -fno-builtin-free -g -fPIC   -o CMakeFiles/handler_hikvision_file.dir/handler_hikvision_file.c.o   -c /root/tcmu-runner/handler_hikvision_file.c",
+  "file": "/root/tcmu-runner/handler_hikvision_file.c"
 },
 {
   "directory": "/root/tcmu-runner/build",

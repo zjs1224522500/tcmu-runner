@@ -57,6 +57,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/handler_qcow.dir/DependInfo.cmake"
   "CMakeFiles/handler_glfs.dir/DependInfo.cmake"
   "CMakeFiles/handler_rbd.dir/DependInfo.cmake"
+  "CMakeFiles/handler_file_zbc.dir/DependInfo.cmake"
   "CMakeFiles/tcmu.dir/DependInfo.cmake"
   "CMakeFiles/tcmu_static.dir/DependInfo.cmake"
   "CMakeFiles/tcmu-runner.dir/DependInfo.cmake"
@@ -64,7 +65,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/handler_hcs_obj.dir/DependInfo.cmake"
   "CMakeFiles/cscope.dir/DependInfo.cmake"
   "CMakeFiles/consumer.dir/DependInfo.cmake"
-  "CMakeFiles/handler_file_zbc.dir/DependInfo.cmake"
   "CMakeFiles/tcmu-synthesizer.dir/DependInfo.cmake"
+  "CMakeFiles/handler_hikvision_file.dir/DependInfo.cmake"
   "CMakeFiles/handler_file_optical.dir/DependInfo.cmake"
   )
